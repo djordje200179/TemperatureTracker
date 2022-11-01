@@ -13,7 +13,7 @@ func (temp Temperature) Celsius() float64 {
 }
 
 func (temp Temperature) Fahrenheit() float64 {
-	return temp.Fahrenheit()*1.8 + 32
+	return temp.Celsius()*1.8 + 32
 }
 
 func (temp Temperature) Kelvin() float64 {
