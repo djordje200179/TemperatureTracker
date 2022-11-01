@@ -9,7 +9,7 @@ var instance *memory
 
 func Instance() storage.Storage {
 	if instance != nil {
-		instance = &memory{readings: make([]*sensor.Reading, 0)}
+		instance = &memory{readings: make([]sensor.Reading, 0)}
 	}
 
 	return instance

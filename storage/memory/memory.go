@@ -6,11 +6,11 @@ import (
 )
 
 type memory struct {
-	readings []*sensor.Reading
+	readings []sensor.Reading
 	lock     sync.Mutex
 }
 
-func (storage *memory) AddReading(reading *sensor.Reading) error {
+func (storage *memory) AddReading(reading sensor.Reading) error {
 	storage.lock.Lock()
 	defer storage.lock.Unlock()
 
@@ -19,7 +19,7 @@ func (storage *memory) AddReading(reading *sensor.Reading) error {
 	return nil
 }
 
-func (storage *memory) GetAllReadings() ([]*sensor.Reading, error) {
+func (storage *memory) GetAllReadings() ([]sensor.Reading, error) {
 	storage.lock.Lock()
 	defer storage.lock.Unlock()
 

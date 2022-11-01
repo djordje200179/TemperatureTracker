@@ -18,12 +18,12 @@ func Open(path string) (storage.Storage, error) {
 	return (*database)(db), nil
 }
 
-func (storage *database) AddReading(reading *sensor.Reading) error {
+func (storage *database) AddReading(reading sensor.Reading) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (storage *database) GetAllReadings() ([]*sensor.Reading, error) {
+func (storage *database) GetAllReadings() ([]sensor.Reading, error) {
 	//TODO implement me
 	panic("implement me")
 }
