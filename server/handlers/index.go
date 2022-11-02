@@ -1,28 +1,26 @@
 package handlers
 
 import (
-	"TemperatureTracker/sensor"
+	"TemperatureTracker/data/reading"
 	"fmt"
 	"net/http"
 )
 
 type IndexData struct {
-	Readings []sensor.Reading
+	Readings []reading.Reading
 }
 
 func (context Context) Index(writer http.ResponseWriter, request *http.Request) {
-	readings := make([]sensor.Reading, 0, len(context.Sensors))
-	for _, sensor := range context.Sensors {
-		reading, err := sensor.Read()
-		if err != nil {
-			fmt.Println(err)
-		}
+	var err error
 
-		readings = append(readings, reading)
+	latestReadings, err := context.Storage.GetLatestReadings()
+	if err != nil {
+		fmt.Println(err)
 	}
 
-	data := IndexData{Readings: readings}
-	err := context.Templates["index"].Execute(writer, data)
+	data := IndexData{Readings: latestReadings}
+
+	err = context.Templates["index"].Execute(writer, data)
 	if err != nil {
 		fmt.Println(err)
 	}

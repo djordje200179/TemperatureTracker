@@ -13,10 +13,10 @@ var filesystem embed.FS
 
 type Map = map[string]*template.Template
 
-func Load() (Map, error) {
+func Load() Map {
 	files, err := fs.ReadDir(filesystem, ".")
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
 	templates := make(Map)
@@ -31,5 +31,5 @@ func Load() (Map, error) {
 		templates[templateName] = template.Must(template.ParseFS(filesystem, fileName))
 	}
 
-	return templates, nil
+	return templates
 }

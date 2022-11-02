@@ -1,8 +1,8 @@
 package database
 
 import (
-	"TemperatureTracker/sensor"
-	"TemperatureTracker/storage"
+	"TemperatureTracker/data/reading"
+	"TemperatureTracker/data/storage"
 	"database/sql"
 	_ "modernc.org/sqlite"
 )
@@ -18,12 +18,12 @@ func Open(path string) (storage.Storage, error) {
 	return (*database)(db), nil
 }
 
-func (storage *database) AddReading(reading sensor.Reading) error {
+func (storage *database) AddReading(reading reading.Reading) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (storage *database) GetAllReadings() ([]sensor.Reading, error) {
+func (storage *database) GetAllReadings() ([]reading.Reading, error) {
 	//TODO implement me
 	panic("implement me")
 }

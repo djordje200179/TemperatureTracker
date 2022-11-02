@@ -1,27 +1,18 @@
-package logger
+package local
 
 import (
-	"TemperatureTracker/sensor"
-	"TemperatureTracker/storage"
+	"TemperatureTracker/data/storage"
 	"fmt"
 	"time"
 )
 
 type Logger struct {
-	Sensors []sensor.Sensor
 	Storage storage.Storage
 }
 
-func Start(storage storage.Storage, period time.Duration) error {
-	sensors, err := sensor.Sensors()
-	if err != nil {
-		return err
-	}
-
-	logger := Logger{Sensors: sensors, Storage: storage}
+func StartLogging(storage storage.Storage, period time.Duration) {
+	logger := Logger{Storage: storage}
 	go logger.LogTemperatures(period)
-
-	return nil
 }
 
 func (logger Logger) LogTemperatures(period time.Duration) {
@@ -31,7 +22,7 @@ func (logger Logger) LogTemperatures(period time.Duration) {
 }
 
 func (logger Logger) LogTemperature() {
-	for _, currSensor := range logger.Sensors {
+	for _, currSensor := range Sensors() {
 		reading, err := currSensor.Read()
 		if err != nil {
 			fmt.Println(err)

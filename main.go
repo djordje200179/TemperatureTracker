@@ -1,9 +1,9 @@
 package main
 
 import (
-	"TemperatureTracker/logger"
+	"TemperatureTracker/data/sensors/local"
+	"TemperatureTracker/data/storage/memory"
 	"TemperatureTracker/server"
-	"TemperatureTracker/storage/memory"
 	"log"
 	"time"
 )
@@ -19,14 +19,11 @@ const (
 )
 
 func main() {
-	var err error
+	local.RegisterDS18B20()
 
-	err = logger.Start(storage, loggingInterval)
-	if err != nil {
-		log.Fatal(err)
-	}
+	local.StartLogging(storage, loggingInterval)
 
-	err = server.Start(storage, port)
+	err := server.Start(storage, port)
 	if err != nil {
 		log.Fatal(err)
 	}
