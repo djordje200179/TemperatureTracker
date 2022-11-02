@@ -8,7 +8,7 @@ import (
 var instance *memory
 
 func Instance() storage.Storage {
-	if instance != nil {
+	if instance == nil {
 		instance = &memory{readings: make([]sensor.Reading, 0)}
 	}
 
