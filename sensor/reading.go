@@ -13,5 +13,5 @@ type Reading struct {
 
 func (reading Reading) String() string {
 	formattedTime := reading.Time.Format("02.01.2006. 15:04:05")
-	return fmt.Sprintf("[%s] %s", formattedTime, reading.Temperature.String())
+	return fmt.Sprintf("%s (%s, %s)", reading.Temperature, reading.Sensor, formattedTime)
 }
