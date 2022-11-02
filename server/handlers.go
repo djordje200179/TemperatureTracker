@@ -2,37 +2,9 @@ package server
 
 import (
 	"TemperatureTracker/storage"
-	"TemperatureTracker/templates"
 	"fmt"
-	"html/template"
-	"io/fs"
 	"net/http"
-	"path/filepath"
-	"strings"
 )
-
-type TemplateMap = map[string]*template.Template
-
-func loadTemplates() (TemplateMap, error) {
-	files, err := fs.ReadDir(templates.FS, ".")
-	if err != nil {
-		return nil, err
-	}
-
-	templateMap := make(TemplateMap)
-
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		}
-
-		fileName := file.Name()
-		templateName := strings.TrimSuffix(fileName, filepath.Ext(fileName))
-		templateMap[templateName] = template.Must(template.ParseFS(templates.FS, fileName))
-	}
-
-	return templateMap, nil
-}
 
 type Context struct {
 	Storage   storage.Storage
