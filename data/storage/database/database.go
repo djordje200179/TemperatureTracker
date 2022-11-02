@@ -29,7 +29,7 @@ func (storage *database) AddReading(reading reading.Reading) error {
 	return nil
 }
 
-func (storage *database) GetReading(sensor global.Sensor) (reading.Reading, error) {
+func (storage *database) GetReadings(sensor global.Sensor) ([]reading.Reading, error) {
 	//TODO implement me
 	panic("implement me")
 }

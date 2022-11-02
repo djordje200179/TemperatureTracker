@@ -23,9 +23,15 @@ func (storage *memory) AddReading(reading reading.Reading) error {
 	return nil
 }
 
-func (storage *memory) GetReading(sensor global.Sensor) (reading.Reading, error) {
-	//return storage.latestReadings[sensor], nil
-	panic("implement me")
+func (storage *memory) GetReadings(sensor global.Sensor) ([]reading.Reading, error) {
+	filteredReadings := make([]reading.Reading, 0)
+	for _, currentReading := range storage.readings {
+		if currentReading.Sensor == sensor {
+			filteredReadings = append(filteredReadings, currentReading)
+		}
+	}
+
+	return filteredReadings, nil
 }
 
 func (storage *memory) GetAllReadings() ([]reading.Reading, error) {

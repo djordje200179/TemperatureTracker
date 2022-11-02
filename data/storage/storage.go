@@ -7,8 +7,8 @@ import (
 
 type Storage interface {
 	AddReading(reading reading.Reading) error
-	GetReading(sensor global.Sensor) (reading.Reading, error)
 
+	GetReadings(sensor global.Sensor) ([]reading.Reading, error)
 	GetAllReadings() ([]reading.Reading, error)
 }
 
