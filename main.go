@@ -1,28 +1,33 @@
 package main
 
 import (
-	"TemperatureTracker/sensor"
-	"fmt"
-	"net/http"
+	"TemperatureTracker/logger"
+	"TemperatureTracker/server"
+	"TemperatureTracker/storage/memory"
+	"log"
+	"time"
 )
 
-func hello(w http.ResponseWriter, req *http.Request) {
-	sensors, err := sensor.Sensors()
-	if err != nil {
-		panic(err)
-	}
+var (
+	storage = memory.Instance()
+)
 
-	mainSensor := sensors[0]
-	temp, err := mainSensor.Read()
-	if err != nil {
-		panic(err)
-	}
+const (
+	port = 8080
 
-	fmt.Fprintf(w, "Cao Jano!\nKada si ti tu, zaista je vruce...\nEvo sad je paklenih %s...", temp)
-}
+	loggingInterval = 1 * time.Minute
+)
 
 func main() {
-	http.HandleFunc("/", hello)
+	var err error
 
-	http.ListenAndServe(":8090", nil)
+	err = logger.Start(storage, loggingInterval)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = server.Start(storage, port)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
