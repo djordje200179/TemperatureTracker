@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"TemperatureTracker/data/reading"
+	"TemperatureTracker/data/storage/cache"
 	"fmt"
 	"net/http"
 )
@@ -11,16 +12,9 @@ type IndexData struct {
 }
 
 func (context Context) Index(writer http.ResponseWriter, request *http.Request) {
-	var err error
+	data := IndexData{Readings: cache.Instance().GetLatestReadings()}
 
-	latestReadings, err := context.Storage.GetLatestReadings()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	data := IndexData{Readings: latestReadings}
-
-	err = context.Templates["index"].Execute(writer, data)
+	err := context.Templates["index"].Execute(writer, data)
 	if err != nil {
 		fmt.Println(err)
 	}

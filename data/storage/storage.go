@@ -7,8 +7,13 @@ import (
 
 type Storage interface {
 	AddReading(reading reading.Reading) error
-
 	GetReading(sensor global.Sensor) (reading.Reading, error)
-	GetLatestReadings() ([]reading.Reading, error)
+
 	GetAllReadings() ([]reading.Reading, error)
+}
+
+type Cache interface {
+	AddReading(reading reading.Reading)
+
+	GetLatestReadings() []reading.Reading
 }
