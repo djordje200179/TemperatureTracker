@@ -4,7 +4,6 @@ import (
 	"TemperatureTracker/sensor"
 	"TemperatureTracker/storage"
 	"fmt"
-	"log"
 	"time"
 )
 
@@ -13,14 +12,16 @@ type Logger struct {
 	Storage storage.Storage
 }
 
-func Start(storage storage.Storage, period time.Duration) {
+func Start(storage storage.Storage, period time.Duration) error {
 	sensors, err := sensor.Sensors()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	logger := Logger{Sensors: sensors, Storage: storage}
 	go logger.LogTemperatures(period)
+
+	return nil
 }
 
 func (logger Logger) LogTemperatures(period time.Duration) {
