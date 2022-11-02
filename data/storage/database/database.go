@@ -2,6 +2,7 @@ package database
 
 import (
 	"TemperatureTracker/data/reading"
+	"TemperatureTracker/data/sensors/global"
 	"TemperatureTracker/data/storage"
 	"database/sql"
 	_ "modernc.org/sqlite"
@@ -19,6 +20,16 @@ func Open(path string) (storage.Storage, error) {
 }
 
 func (storage *database) AddReading(reading reading.Reading) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (storage *database) GetReading(sensor global.Sensor) (reading.Reading, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (storage *database) GetLatestReadings() ([]reading.Reading, error) {
 	//TODO implement me
 	panic("implement me")
 }
