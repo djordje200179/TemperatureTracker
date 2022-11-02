@@ -6,6 +6,7 @@ import (
 )
 
 type Reading struct {
+	Sensor
 	Temperature
 	time.Time
 }

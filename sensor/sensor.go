@@ -59,5 +59,5 @@ func (sensor Sensor) Read() (Reading, error) {
 	}
 	rawTemp /= 1000
 
-	return Reading{Temperature(rawTemp), time.Now()}, nil
+	return Reading{sensor, Temperature(rawTemp), time.Now()}, nil
 }
