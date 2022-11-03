@@ -21,7 +21,7 @@ func MakeContext(storage storage.Storage) Context {
 }
 
 func (context Context) RegisterHandlers(mux *http.ServeMux) {
-	mux.Handle("/", Index{Context: context})
+	mux.HandleFunc("/", context.Index)
 }
 
 func (context Context) UseTemplate(templateName string, writer http.ResponseWriter, data any) {

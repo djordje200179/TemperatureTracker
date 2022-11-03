@@ -6,12 +6,12 @@ import (
 	"net/http"
 )
 
-type Index struct {
-	Context
+type indexData struct {
 	Readings []reading.Reading
 }
 
-func (handler Index) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	handler.Readings = cache.Instance().GetLatestReadings()
-	handler.UseTemplate("index", writer, handler)
+func (context Context) Index(writer http.ResponseWriter, _ *http.Request) {
+	readings := cache.Instance().GetLatestReadings()
+
+	context.UseTemplate("index", writer, indexData{readings})
 }
