@@ -8,6 +8,7 @@ import (
 
 type Sensor interface {
 	fmt.Stringer
+
 	Sensor() global.Sensor
 	Read() (reading.Reading, error)
 }

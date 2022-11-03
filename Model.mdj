@@ -28,30 +28,6 @@
 							"name": "Reading",
 							"ownedElements": [
 								{
-									"_type": "UMLDataType",
-									"_id": "AAAAAAGEPUIqAl7ItmY=",
-									"_parent": {
-										"$ref": "AAAAAAGEPUD5G163ZSk="
-									},
-									"name": "Temperature"
-								},
-								{
-									"_type": "UMLDataType",
-									"_id": "AAAAAAGEPUJYu17OAZU=",
-									"_parent": {
-										"$ref": "AAAAAAGEPUD5G163ZSk="
-									},
-									"name": "Humidity"
-								},
-								{
-									"_type": "UMLClass",
-									"_id": "AAAAAAGEPUKRel7Sli4=",
-									"_parent": {
-										"$ref": "AAAAAAGEPUD5G163ZSk="
-									},
-									"name": "Reading"
-								},
-								{
 									"_type": "UMLClassDiagram",
 									"_id": "AAAAAAGEPUdkN19UvI8=",
 									"_parent": {
@@ -279,7 +255,7 @@
 															},
 															"visible": false,
 															"font": "Arial;13;0",
-															"width": 86.6962890625,
+															"width": 88.83544921875,
 															"height": 13,
 															"text": "(from Reading)"
 														},
@@ -564,6 +540,30 @@
 											}
 										}
 									]
+								},
+								{
+									"_type": "UMLClass",
+									"_id": "AAAAAAGEPUKRel7Sli4=",
+									"_parent": {
+										"$ref": "AAAAAAGEPUD5G163ZSk="
+									},
+									"name": "Reading"
+								},
+								{
+									"_type": "UMLDataType",
+									"_id": "AAAAAAGEPUIqAl7ItmY=",
+									"_parent": {
+										"$ref": "AAAAAAGEPUD5G163ZSk="
+									},
+									"name": "Temperature"
+								},
+								{
+									"_type": "UMLDataType",
+									"_id": "AAAAAAGEPUJYu17OAZU=",
+									"_parent": {
+										"$ref": "AAAAAAGEPUD5G163ZSk="
+									},
+									"name": "Humidity"
 								}
 							]
 						},
@@ -581,7 +581,25 @@
 									"_parent": {
 										"$ref": "AAAAAAGEPUETVF67JIU="
 									},
-									"name": "Global"
+									"name": "Global",
+									"ownedElements": [
+										{
+											"_type": "UMLDataType",
+											"_id": "AAAAAAGEP6p6D6cB1ow=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUScTV8ZUco="
+											},
+											"name": "Sensor"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGEP6qZ5KcFV+M=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUScTV8ZUco="
+											},
+											"name": "Sensors"
+										}
+									]
 								},
 								{
 									"_type": "UMLPackage",
@@ -589,7 +607,41 @@
 									"_parent": {
 										"$ref": "AAAAAAGEPUETVF67JIU="
 									},
-									"name": "Local"
+									"name": "Local",
+									"ownedElements": [
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGEP6uQzqcJMJU=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUS+yF8dCMU="
+											},
+											"name": "Logger"
+										},
+										{
+											"_type": "UMLInterface",
+											"_id": "AAAAAAGEP6vXt6cNm7M=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUS+yF8dCMU="
+											},
+											"name": "Sensor"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGEP6vsmacRUwQ=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUS+yF8dCMU="
+											},
+											"name": "Sensors"
+										},
+										{
+											"_type": "UMLClass",
+											"_id": "AAAAAAGEP6wdHqcV0lI=",
+											"_parent": {
+												"$ref": "AAAAAAGEPUS+yF8dCMU="
+											},
+											"name": "DS18B20"
+										}
+									]
 								}
 							]
 						},

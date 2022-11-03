@@ -2,6 +2,7 @@ package main
 
 import (
 	"TemperatureTracker/data/sensors/local"
+	"TemperatureTracker/data/sensors/local/ds18b20"
 	"TemperatureTracker/data/storage/memory"
 	"TemperatureTracker/server"
 	"log"
@@ -19,7 +20,7 @@ const (
 )
 
 func main() {
-	local.RegisterDS18B20()
+	local.RegisterSensor(ds18b20.Instance())
 
 	local.StartLogging(storage, loggingInterval)
 
