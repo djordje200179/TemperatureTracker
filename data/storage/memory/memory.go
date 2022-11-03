@@ -10,7 +10,7 @@ import (
 type memory struct {
 	readings []reading.Reading
 
-	lock sync.Mutex
+	lock sync.RWMutex
 }
 
 func (storage *memory) AddReading(reading reading.Reading) error {
@@ -24,6 +24,9 @@ func (storage *memory) AddReading(reading reading.Reading) error {
 }
 
 func (storage *memory) GetReadings(sensor global.Sensor) ([]reading.Reading, error) {
+	storage.lock.RLock()
+	defer storage.lock.RUnlock()
+
 	filteredReadings := make([]reading.Reading, 0)
 	for _, currentReading := range storage.readings {
 		if currentReading.Sensor == sensor {
@@ -35,6 +38,9 @@ func (storage *memory) GetReadings(sensor global.Sensor) ([]reading.Reading, err
 }
 
 func (storage *memory) GetAllReadings() ([]reading.Reading, error) {
+	storage.lock.RLock()
+	defer storage.lock.RUnlock()
+
 	copiedReadings := make([]reading.Reading, len(storage.readings))
 	copy(copiedReadings, storage.readings)
 
