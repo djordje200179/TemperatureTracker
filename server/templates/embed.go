@@ -27,6 +27,10 @@ func Load() Map {
 		}
 
 		fileName := file.Name()
+		if !strings.HasSuffix(fileName, ".html") {
+			continue
+		}
+
 		templateName := strings.TrimSuffix(fileName, filepath.Ext(fileName))
 		templates[templateName] = template.Must(template.ParseFS(filesystem, fileName))
 	}
