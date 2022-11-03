@@ -8,13 +8,13 @@ import (
 )
 
 func Start(storage storage.Storage, port uint16) error {
-	mux := http.NewServeMux()
+	indexMux := http.NewServeMux()
 
-	context := handlers.MakeContext(storage)
-	context.RegisterHandlers(mux)
+	indexContext := handlers.Context{Storage: storage}
+	indexContext.RegisterHandlers(indexMux)
 
 	addr := fmt.Sprintf(":%d", port)
-	err := http.ListenAndServe(addr, mux)
+	err := http.ListenAndServe(addr, indexMux)
 	if err != nil {
 		return err
 	}

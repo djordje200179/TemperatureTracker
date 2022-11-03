@@ -2,38 +2,33 @@ package templates
 
 import (
 	"embed"
+	"fmt"
 	"html/template"
-	"io/fs"
-	"path/filepath"
-	"strings"
+	"net/http"
 )
 
 //go:embed *.html
 var filesystem embed.FS
 
-type Map = map[string]*template.Template
+var templates = make(map[string]*template.Template)
 
-func Load() Map {
-	files, err := fs.ReadDir(filesystem, ".")
+func Get(templateName string) *template.Template {
+	tmpl, ok := templates[templateName]
+	if !ok {
+		fileName := fmt.Sprintf("%s.html", templateName)
+
+		tmpl = template.Must(template.ParseFS(filesystem, fileName))
+		templates[templateName] = tmpl
+	}
+
+	return tmpl
+}
+
+func Use(templateName string, writer http.ResponseWriter, data any) {
+	tmpl := Get(templateName)
+
+	err := tmpl.Execute(writer, data)
 	if err != nil {
-		return nil
+		fmt.Println(err)
 	}
-
-	templates := make(Map)
-
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		}
-
-		fileName := file.Name()
-		if !strings.HasSuffix(fileName, ".html") {
-			continue
-		}
-
-		templateName := strings.TrimSuffix(fileName, filepath.Ext(fileName))
-		templates[templateName] = template.Must(template.ParseFS(filesystem, fileName))
-	}
-
-	return templates
 }
