@@ -3,6 +3,7 @@ package handlers
 import (
 	"TemperatureTracker/data/storage"
 	"TemperatureTracker/server/templates"
+	"fmt"
 	"net/http"
 )
 
@@ -20,5 +21,12 @@ func MakeContext(storage storage.Storage) Context {
 }
 
 func (context Context) RegisterHandlers(mux *http.ServeMux) {
-	mux.HandleFunc("/", context.Index)
+	mux.Handle("/", Index{Context: context})
+}
+
+func (context Context) UseTemplate(templateName string, writer http.ResponseWriter, data any) {
+	err := context.Templates[templateName].Execute(writer, data)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
