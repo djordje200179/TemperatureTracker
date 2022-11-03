@@ -6,14 +6,10 @@ import (
 	"TemperatureTracker/data/storage"
 )
 
-var instance *cache
+var instance = cache{
+	readings: make(map[global.Sensor]reading.Reading),
+}
 
 func Instance() storage.Cache {
-	if instance == nil {
-		instance = &cache{
-			readings: make(map[global.Sensor]reading.Reading),
-		}
-	}
-
-	return instance
+	return &instance
 }

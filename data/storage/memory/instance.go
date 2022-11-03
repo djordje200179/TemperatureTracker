@@ -5,14 +5,10 @@ import (
 	"TemperatureTracker/data/storage"
 )
 
-var instance *memory
+var instance = memory{
+	readings: make([]reading.Reading, 0),
+}
 
 func Instance() storage.Storage {
-	if instance == nil {
-		instance = &memory{
-			readings: make([]reading.Reading, 0),
-		}
-	}
-
-	return instance
+	return &instance
 }
