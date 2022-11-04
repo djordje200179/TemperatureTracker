@@ -19,5 +19,7 @@ func Start(storage storage.Storage, port uint16) error {
 		return err
 	}
 
+	fmt.Println("Listening at", addr)
+
 	return nil
 }
