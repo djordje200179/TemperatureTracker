@@ -16,7 +16,7 @@ var (
 const (
 	port = 8080
 
-	loggingInterval = 1 * time.Minute
+	loggingInterval = 5 * time.Minute
 )
 
 func main() {
