@@ -12,5 +12,7 @@ type Context struct {
 func (context Context) Handler() http.Handler {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/api/latest", context.Latest)
+
 	return mux
 }
