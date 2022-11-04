@@ -13,7 +13,8 @@ func Start(storage storage.Storage, port uint16) error {
 	indexContext := handlers.Context{Storage: storage}
 	indexContext.RegisterHandlers(indexMux)
 
-	indexMux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	staticFilesHandler := http.StripPrefix("/static/", http.FileServer(http.Dir("server/static")))
+	indexMux.Handle("/static/", staticFilesHandler)
 
 	addr := fmt.Sprintf(":%d", port)
 	err := http.ListenAndServe(addr, indexMux)
