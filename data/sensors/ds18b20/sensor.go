@@ -2,7 +2,6 @@ package ds18b20
 
 import (
 	"TemperatureTracker/data/reading"
-	"TemperatureTracker/data/sensors/global"
 	"os"
 	"strconv"
 	"strings"
@@ -15,10 +14,6 @@ type ds18b20 struct {
 
 func (sensor ds18b20) String() string {
 	return "local/ds18b20"
-}
-
-func (sensor ds18b20) Sensor() global.Sensor {
-	return global.Sensor(sensor.String())
 }
 
 func (sensor ds18b20) Read() (reading.Reading, error) {
@@ -36,7 +31,7 @@ func (sensor ds18b20) Read() (reading.Reading, error) {
 	rawTemp /= 1000
 
 	newReading := reading.Reading{
-		Sensor: sensor.Sensor(),
+		Sensor: sensor,
 		Time:   time.Now(),
 
 		Temperature: reading.Temperature(rawTemp),

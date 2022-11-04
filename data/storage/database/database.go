@@ -2,7 +2,6 @@ package database
 
 import (
 	"TemperatureTracker/data/reading"
-	"TemperatureTracker/data/sensors/global"
 	"TemperatureTracker/data/storage"
 	"TemperatureTracker/data/storage/cache"
 	"database/sql"
@@ -29,7 +28,7 @@ func (storage *database) AddReading(reading reading.Reading) error {
 	return nil
 }
 
-func (storage *database) GetReadings(sensor global.Sensor) ([]reading.Reading, error) {
+func (storage *database) GetReadings(sensor reading.Sensor) ([]reading.Reading, error) {
 	//TODO implement me
 	panic("implement me")
 }

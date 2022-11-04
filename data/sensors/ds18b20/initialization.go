@@ -7,12 +7,6 @@ import (
 )
 
 func Init() {
-	setupInterface()
-
-	instance.Id = findId()
-}
-
-func setupInterface() {
 	//var err error
 	//
 	//err = exec.Command("bash", "-c", "modprobe w1-gpio").Run()

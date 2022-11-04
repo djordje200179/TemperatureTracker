@@ -1,13 +1,12 @@
 package reading
 
 import (
-	"TemperatureTracker/data/sensors/global"
 	"fmt"
 	"time"
 )
 
 type Reading struct {
-	global.Sensor
+	Sensor
 
 	time.Time
 

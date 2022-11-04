@@ -2,12 +2,11 @@ package cache
 
 import (
 	"TemperatureTracker/data/reading"
-	"TemperatureTracker/data/sensors/global"
 	"sync"
 )
 
 type cache struct {
-	readings map[global.Sensor]reading.Reading
+	readings map[reading.Sensor]reading.Reading
 	lock     sync.RWMutex
 }
 

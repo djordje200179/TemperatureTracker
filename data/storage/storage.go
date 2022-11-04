@@ -2,13 +2,12 @@ package storage
 
 import (
 	"TemperatureTracker/data/reading"
-	"TemperatureTracker/data/sensors/global"
 )
 
 type Storage interface {
 	AddReading(reading reading.Reading) error
 
-	GetReadings(sensor global.Sensor) ([]reading.Reading, error)
+	GetReadings(sensor reading.Sensor) ([]reading.Reading, error)
 	GetAllReadings() ([]reading.Reading, error)
 }
 

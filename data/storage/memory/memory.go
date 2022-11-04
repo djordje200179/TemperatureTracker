@@ -2,7 +2,6 @@ package memory
 
 import (
 	"TemperatureTracker/data/reading"
-	"TemperatureTracker/data/sensors/global"
 	"TemperatureTracker/data/storage/cache"
 	"sync"
 )
@@ -23,7 +22,7 @@ func (storage *memory) AddReading(reading reading.Reading) error {
 	return nil
 }
 
-func (storage *memory) GetReadings(sensor global.Sensor) ([]reading.Reading, error) {
+func (storage *memory) GetReadings(sensor reading.Sensor) ([]reading.Reading, error) {
 	storage.lock.RLock()
 	defer storage.lock.RUnlock()
 
