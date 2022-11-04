@@ -24,11 +24,13 @@ func Get(templateName string) *template.Template {
 	return tmpl
 }
 
-func Use(templateName string, writer http.ResponseWriter, data any) {
+func Use(templateName string, writer http.ResponseWriter, data any) error {
 	tmpl := Get(templateName)
 
 	err := tmpl.Execute(writer, data)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
+
+	return nil
 }

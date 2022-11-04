@@ -14,5 +14,8 @@ type indexData struct {
 func (context Context) Index(writer http.ResponseWriter, _ *http.Request) {
 	readings := cache.Instance().GetLatestReadings()
 
-	templates.Use("index", writer, indexData{readings})
+	err := templates.Use("index", writer, indexData{readings})
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+	}
 }
