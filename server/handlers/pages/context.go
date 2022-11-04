@@ -1,4 +1,4 @@
-package handlers
+package pages
 
 import (
 	"TemperatureTracker/data/storage"
@@ -9,6 +9,10 @@ type Context struct {
 	Storage storage.Storage
 }
 
-func (context Context) RegisterHandlers(mux *http.ServeMux) {
+func (context Context) Handler() http.Handler {
+	mux := http.NewServeMux()
+
 	mux.HandleFunc("/", context.Index)
+
+	return mux
 }

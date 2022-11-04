@@ -2,22 +2,26 @@ package server
 
 import (
 	"TemperatureTracker/data/storage"
-	"TemperatureTracker/server/handlers"
+	"TemperatureTracker/server/handlers/api"
+	"TemperatureTracker/server/handlers/pages"
 	"fmt"
 	"net/http"
 )
 
 func Start(storage storage.Storage, port uint16) error {
-	indexMux := http.NewServeMux()
+	global := http.NewServeMux()
 
-	indexContext := handlers.Context{Storage: storage}
-	indexContext.RegisterHandlers(indexMux)
+	pagesContext := pages.Context{Storage: storage}
+	global.Handle("/", pagesContext.Handler())
+
+	apiContext := api.Context{Storage: storage}
+	global.Handle("/api/", apiContext.Handler())
 
 	staticFilesHandler := http.StripPrefix("/static/", http.FileServer(http.Dir("server/static")))
-	indexMux.Handle("/static/", staticFilesHandler)
+	global.Handle("/static/", staticFilesHandler)
 
 	addr := fmt.Sprintf(":%d", port)
-	err := http.ListenAndServe(addr, indexMux)
+	err := http.ListenAndServe(addr, global)
 	if err != nil {
 		return err
 	}
