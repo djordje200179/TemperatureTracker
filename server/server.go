@@ -9,19 +9,18 @@ import (
 )
 
 func Start(storage storage.Storage, port uint16) error {
-	global := http.NewServeMux()
+	globalRouter := http.NewServeMux()
 
-	pagesContext := pages.Context{Storage: storage}
-	global.Handle("/", pagesContext.Handler())
+	pagesRouter := pages.NewRouter(storage)
+	apiRouter := api.NewRouter(storage)
+	staticFilesRouter := http.FileServer(http.Dir("server/static"))
 
-	apiContext := api.Context{Storage: storage}
-	global.Handle("/api/", apiContext.Handler())
-
-	staticFilesHandler := http.StripPrefix("/static/", http.FileServer(http.Dir("server/static")))
-	global.Handle("/static/", staticFilesHandler)
+	globalRouter.Handle("/", pagesRouter)
+	globalRouter.Handle("/api/", http.StripPrefix("/api", apiRouter))
+	globalRouter.Handle("/static/", http.StripPrefix("/static/", staticFilesRouter))
 
 	addr := fmt.Sprintf(":%d", port)
-	err := http.ListenAndServe(addr, global)
+	err := http.ListenAndServe(addr, globalRouter)
 	if err != nil {
 		return err
 	}

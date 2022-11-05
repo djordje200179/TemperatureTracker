@@ -4,7 +4,6 @@ import (
 	"embed"
 	"fmt"
 	"html/template"
-	"net/http"
 )
 
 //go:embed *.html
@@ -22,15 +21,4 @@ func Get(templateName string) *template.Template {
 	}
 
 	return tmpl
-}
-
-func Use(templateName string, writer http.ResponseWriter, data any) error {
-	tmpl := Get(templateName)
-
-	err := tmpl.Execute(writer, data)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
