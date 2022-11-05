@@ -23,7 +23,7 @@ const (
 func main() {
 	logger.Start(ds18b20.Instance(), storage, loggingInterval)
 
-	cli.Start(storage)
+	cli.Default().Storage = storage
 
 	err := server.Start(storage, port)
 	if err != nil {

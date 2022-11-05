@@ -5,23 +5,25 @@ import (
 	"TemperatureTracker/data/storage/cache"
 	"bufio"
 	"fmt"
-	"os"
+	"io"
 	"strings"
 )
 
 type CLI struct {
-	storage storage.Storage
-	cache   storage.Cache
+	Storage storage.Storage
+	Cache   storage.Cache
 
-	reader *bufio.Reader
+	*bufio.Reader
+	*bufio.Writer
 }
 
-func Start(storage storage.Storage) *CLI {
+func Start(storage storage.Storage, reader io.Reader, writer io.Writer) *CLI {
 	cli := &CLI{
-		storage: storage,
-		cache:   cache.Instance(),
+		Storage: storage,
+		Cache:   cache.Instance(),
 
-		reader: bufio.NewReader(os.Stdin),
+		Reader: bufio.NewReader(reader),
+		Writer: bufio.NewWriter(writer),
 	}
 
 	go cli.Handle()
@@ -31,24 +33,36 @@ func Start(storage storage.Storage) *CLI {
 
 func (cli *CLI) Handle() {
 	for {
-		fmt.Print("> ")
+		line := cli.readLine()
+		cli.handleLine(line)
+	}
+}
 
-		text, _ := cli.reader.ReadString('\n')
-		text = strings.TrimSuffix(text, "\n")
+func (cli *CLI) readLine() string {
+	cli.WriteString("> ")
+	cli.Flush()
 
-		switch text {
-		case "exit":
-			return
-		case "get_latest":
-			latestData := cli.cache.GetLatestReadings()
+	text, _ := cli.ReadString('\n')
+	text = strings.TrimSuffix(text, "\n")
 
-			if len(latestData) != 0 {
-				for _, data := range latestData {
-					fmt.Println(data)
-				}
-			} else {
-				fmt.Println("No readings found")
+	return text
+}
+
+func (cli *CLI) handleLine(line string) {
+	command := line
+
+	switch command {
+	case "exit":
+		return
+	case "get_latest":
+		latestData := cli.Cache.GetLatestReadings()
+
+		if len(latestData) != 0 {
+			for _, data := range latestData {
+				cli.WriteString(data.String())
 			}
+		} else {
+			fmt.Println("No readings found")
 		}
 	}
 }
