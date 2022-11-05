@@ -5,6 +5,7 @@ import (
 	"TemperatureTracker/data/sensors/ds18b20"
 	"TemperatureTracker/data/storage/memory"
 	"TemperatureTracker/server"
+	"TemperatureTracker/server/cli"
 	"log"
 	"time"
 )
@@ -21,6 +22,8 @@ const (
 
 func main() {
 	logger.Start(ds18b20.Instance(), storage, loggingInterval)
+
+	cli.Start(storage)
 
 	err := server.Start(storage, port)
 	if err != nil {
