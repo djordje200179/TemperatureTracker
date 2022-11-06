@@ -13,11 +13,13 @@ type CLI struct {
 	Storage storage.Storage
 	Cache   storage.Cache
 
+	finished bool
+
 	*bufio.Reader
 	*bufio.Writer
 }
 
-func Start(storage storage.Storage, reader io.Reader, writer io.Writer) *CLI {
+func New(storage storage.Storage, reader io.Reader, writer io.Writer) *CLI {
 	cli := &CLI{
 		Storage: storage,
 		Cache:   cache.Instance(),
@@ -26,13 +28,11 @@ func Start(storage storage.Storage, reader io.Reader, writer io.Writer) *CLI {
 		Writer: bufio.NewWriter(writer),
 	}
 
-	go cli.Handle()
-
 	return cli
 }
 
 func (cli *CLI) Handle() {
-	for {
+	for !cli.finished {
 		line := cli.readLine()
 		cli.handleLine(line)
 	}
@@ -53,7 +53,7 @@ func (cli *CLI) handleLine(line string) {
 
 	switch command {
 	case "exit":
-		return
+		cli.finished = true
 	case "get_latest":
 		latestData := cli.Cache.GetLatestReadings()
 

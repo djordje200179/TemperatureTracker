@@ -24,6 +24,7 @@ func main() {
 	logger.Start(ds18b20.Instance(), storage, loggingInterval)
 
 	cli.Default().Storage = storage
+	go cli.Default().Handle()
 
 	err := server.Start(storage, port)
 	if err != nil {

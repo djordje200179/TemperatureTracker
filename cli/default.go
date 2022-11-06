@@ -4,7 +4,7 @@ import (
 	"os"
 )
 
-var defaultInstance = Start(nil, os.Stdin, os.Stdout)
+var defaultInstance = New(nil, os.Stdin, os.Stdout)
 
 func Default() *CLI {
 	return defaultInstance
