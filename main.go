@@ -26,8 +26,7 @@ func main() {
 	cli.Default().Storage = storage
 	go cli.Default().Handle()
 
-	server := server.New(storage)
-	err := server.Start(port)
+	err := server.New(storage).Start(port)
 	if err != nil {
 		log.Fatal(err)
 	}
