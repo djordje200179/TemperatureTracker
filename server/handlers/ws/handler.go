@@ -3,7 +3,6 @@ package ws
 import (
 	"TemperatureTracker/cli"
 	"TemperatureTracker/data/storage"
-	"TemperatureTracker/data/storage/memory"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -38,7 +37,7 @@ func (router Router) ServeHTTP(writer http.ResponseWriter, request *http.Request
 			return
 		}
 
-		cliInterface := cli.New(memory.Instance(), wsReader, wsWriter)
+		cliInterface := cli.New(router.Storage, wsReader, wsWriter)
 		cliInterface.Handle()
 
 		err = wsWriter.Close()
