@@ -9,26 +9,48 @@ import (
 	"net/http"
 )
 
-func Start(storage storage.Storage, port uint16) error {
-	globalRouter := http.NewServeMux()
+type routers struct {
+	pages http.Handler
+	ws    *ws.Router
+	api   *api.Router
 
-	pagesRouter := pages.NewRouter(storage)
-	wsRouter := ws.Router{Storage: storage}
-	apiRouter := api.NewRouter(storage)
-	staticFilesRouter := http.FileServer(http.Dir("server/static"))
+	files http.Handler
+}
 
-	globalRouter.Handle("/", pagesRouter)
-	globalRouter.Handle("/ws", http.StripPrefix("/ws", wsRouter))
-	globalRouter.Handle("/api/", http.StripPrefix("/api", apiRouter))
-	globalRouter.Handle("/static/", http.StripPrefix("/static/", staticFilesRouter))
+type Server struct {
+	http.ServeMux
+	routers
+}
 
+func New(storage storage.Storage) *Server {
+	server := &Server{
+		routers: routers{
+			pages: pages.NewRouter(storage),
+			ws:    &ws.Router{Storage: storage},
+			api:   api.NewRouter(storage),
+			files: http.FileServer(http.Dir("server/static")),
+		},
+	}
+
+	server.attachRoutes()
+
+	return server
+}
+
+func (server *Server) attachRoutes() {
+	server.Handle("/", server.routers.pages)
+	server.Handle("/ws", http.StripPrefix("/ws", server.routers.ws))
+	server.Handle("/api/", http.StripPrefix("/api", server.routers.api))
+	server.Handle("/static/", http.StripPrefix("/static/", server.routers.files))
+}
+
+func (server *Server) Start(port uint16) error {
 	addr := fmt.Sprintf(":%d", port)
-	err := http.ListenAndServe(addr, globalRouter)
+
+	err := http.ListenAndServe(addr, server)
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Listening at", addr)
 
 	return nil
 }
