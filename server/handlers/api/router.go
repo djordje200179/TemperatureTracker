@@ -20,9 +20,13 @@ func NewRouter(storage storage.Storage) *Router {
 		Cache:   cache.Instance(),
 	}
 
-	router.HandleFunc("/latest", router.Latest)
+	router.attachRoutes()
 
 	return router
+}
+
+func (router *Router) attachRoutes() {
+	router.HandleFunc("/latest", router.Latest)
 }
 
 func returnJson(writer http.ResponseWriter, data any) {

@@ -20,9 +20,13 @@ func NewRouter(storage storage.Storage) *Router {
 		Cache:   cache.Instance(),
 	}
 
-	router.HandleFunc("/", router.Index)
+	router.attachRoutes()
 
 	return router
+}
+
+func (router *Router) attachRoutes() {
+	router.HandleFunc("/", router.Index)
 }
 
 func returnPage(templateName string, writer http.ResponseWriter, data any) {
