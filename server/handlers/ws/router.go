@@ -14,7 +14,8 @@ var config = websocket.Upgrader{
 
 type Router struct {
 	Storage storage.Storage
-	*http.ServeMux
+
+	http.ServeMux
 }
 
 func NewRouter(storage storage.Storage) *Router {
@@ -22,10 +23,14 @@ func NewRouter(storage storage.Storage) *Router {
 		Storage: storage,
 	}
 
-	router.HandleFunc("/cli", router.CLI)
-	router.HandleFunc("/sensor", router.Sensor)
+	router.attachRoutes()
 
 	return router
+}
+
+func (router *Router) attachRoutes() {
+	router.HandleFunc("/cli", router.CLI)
+	router.HandleFunc("/sensor", router.Sensor)
 }
 
 func convertRequest(writer http.ResponseWriter, request *http.Request) *websocket.Conn {
