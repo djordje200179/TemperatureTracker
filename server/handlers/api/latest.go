@@ -10,7 +10,7 @@ type latestData struct {
 }
 
 func (router *Router) Latest(writer http.ResponseWriter, _ *http.Request) {
-	readings := router.cache.GetLatestReadings()
+	readings := router.Cache.GetLatestReadings()
 	data := latestData{readings}
 
 	returnJson(writer, data)

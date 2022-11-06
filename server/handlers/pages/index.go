@@ -10,7 +10,7 @@ type indexData struct {
 }
 
 func (router *Router) Index(writer http.ResponseWriter, _ *http.Request) {
-	readings := router.cache.GetLatestReadings()
+	readings := router.Cache.GetLatestReadings()
 	data := indexData{readings}
 
 	returnPage("index", writer, data)

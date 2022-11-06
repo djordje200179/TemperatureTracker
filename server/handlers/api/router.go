@@ -8,16 +8,16 @@ import (
 )
 
 type Router struct {
-	storage storage.Storage
-	cache   storage.Cache
+	Storage storage.Storage
+	Cache   storage.Cache
 
 	http.ServeMux
 }
 
-func NewRouter(storage storage.Storage) http.Handler {
+func NewRouter(storage storage.Storage) *Router {
 	router := &Router{
-		storage: storage,
-		cache:   cache.Instance(),
+		Storage: storage,
+		Cache:   cache.Instance(),
 	}
 
 	router.HandleFunc("/latest", router.Latest)
