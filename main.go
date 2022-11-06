@@ -1,11 +1,11 @@
 package main
 
 import (
+	"TemperatureTracker/cli"
 	"TemperatureTracker/data/logger"
 	"TemperatureTracker/data/sensors/ds18b20"
 	"TemperatureTracker/data/storage/memory"
 	"TemperatureTracker/server"
-	"TemperatureTracker/server/cli"
 	"log"
 	"time"
 )
