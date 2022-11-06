@@ -13,11 +13,11 @@ type Sensor struct {
 	Conn *websocket.Conn
 }
 
-func (sensor *Sensor) String() string {
+func (sensor Sensor) String() string {
 	return sensor.Name
 }
 
-func (sensor *Sensor) Read() (reading.Reading, error) {
+func (sensor Sensor) Read() (reading.Reading, error) {
 	err := sensor.Conn.WriteMessage(websocket.TextMessage, []byte("READ"))
 	if err != nil {
 		return reading.Reading{}, err
