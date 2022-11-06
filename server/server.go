@@ -11,7 +11,7 @@ import (
 
 type routers struct {
 	pages *pages.Router
-	ws    ws.Router
+	ws    *ws.Router
 	api   *api.Router
 
 	files http.Handler
@@ -26,7 +26,7 @@ func New(storage storage.Storage) *Server {
 	server := &Server{
 		routers: routers{
 			pages: pages.NewRouter(storage),
-			ws:    ws.Router{Storage: storage},
+			ws:    ws.NewRouter(storage),
 			api:   api.NewRouter(storage),
 			files: http.FileServer(http.Dir("server/static")),
 		},

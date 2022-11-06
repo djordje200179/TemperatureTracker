@@ -1,7 +1,6 @@
 package ws
 
 import (
-	"TemperatureTracker/cli"
 	"TemperatureTracker/data/storage"
 	"github.com/gorilla/websocket"
 	"log"
@@ -15,34 +14,25 @@ var config = websocket.Upgrader{
 
 type Router struct {
 	Storage storage.Storage
+	*http.ServeMux
 }
 
-func (router Router) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	conn, err := config.Upgrade(writer, request, nil)
+func NewRouter(storage storage.Storage) *Router {
+	router := &Router{
+		Storage: storage,
+	}
+
+	router.HandleFunc("/cli", router.CLI)
+	router.HandleFunc("/sensor", router.Sensor)
+
+	return router
+}
+
+func convertRequest(writer http.ResponseWriter, request *http.Request) *websocket.Conn {
+	connection, err := config.Upgrade(writer, request, nil)
 	if err != nil {
 		log.Println(err)
-		return
 	}
 
-	for {
-		var err error
-
-		messageType, wsReader, err := conn.NextReader()
-		if err != nil {
-			return
-		}
-
-		wsWriter, err := conn.NextWriter(messageType)
-		if err != nil {
-			return
-		}
-
-		cliInterface := cli.New(router.Storage, wsReader, wsWriter)
-		cliInterface.Handle()
-
-		err = wsWriter.Close()
-		if err != nil {
-			return
-		}
-	}
+	return connection
 }
