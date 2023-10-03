@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using TemperatureTracker.Models;
 
@@ -40,24 +43,24 @@ public class SensorsController : ControllerBase {
 	}
 
 	public record struct CreateSensorParams(
-		[property: JsonPropertyName("deviceName")] string DeviceName,
-		[property: JsonPropertyName("sensorName")] string SensorName
+		[property: JsonPropertyName("name")] string Name
 	);
 
+	[Authorize]
 	[HttpPost]
 	public async Task<ActionResult<Sensor>> Post([FromBody] CreateSensorParams sensorParams) {
-		if (string.IsNullOrWhiteSpace(sensorParams.DeviceName) || sensorParams.DeviceName.Length > 30)
-			return BadRequest("Invalid device name");
-
-		if (string.IsNullOrWhiteSpace(sensorParams.SensorName) || sensorParams.SensorName.Length > 30)
+		if (string.IsNullOrWhiteSpace(sensorParams.Name) || sensorParams.Name.Length > 30)
 			return BadRequest("Invalid sensor name");
 
-		var device = await readingsContext.Devices.FirstOrDefaultAsync(d => d.Name == sensorParams.DeviceName);
+		var claims = ((ClaimsIdentity)HttpContext.User.Identity!).Claims;
+
+		var deviceName = claims.FirstOrDefault(claim => claim.Type == "device")?.Value;
+		var device = await readingsContext.Devices.FirstOrDefaultAsync(d => d.Name == deviceName);
 		if (device is null)
 			return BadRequest("Device not found");
 
 		var sensor = new Sensor {
-			Name = sensorParams.SensorName,
+			Name = sensorParams.Name,
 			Device = device
 		};
 

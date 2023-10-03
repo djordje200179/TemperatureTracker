@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -34,6 +35,7 @@ public class ReadingsController : ControllerBase {
 		[property: JsonPropertyName("humidity")] double? Humidity
 	);
 
+	[Authorize]
 	[HttpPost]
 	public async Task<ActionResult<Reading>> Create(CreateReadingParams readingParams) {
 		var sensor = await readingsContext.Sensors.FindAsync(readingParams.Sensor);
