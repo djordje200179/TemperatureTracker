@@ -4,7 +4,8 @@ import requests
 
 device_name = "Pi Zero"
 device_key = "test123"
-sensor_name = "DS1820"
+sensor_name = "Dnevna soba"
+sensor_type = "DS1820"
 
 base_url = "http://localhost:8081"
 
@@ -26,6 +27,7 @@ jwt: str
 def login():
 	body = {
 		"name": device_name,
+		"type": sensor_type,
 		"key": device_key
 	}
 	

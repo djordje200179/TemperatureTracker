@@ -42,7 +42,8 @@ public class SensorsController : ControllerBase {
 	}
 
 	public record struct CreateSensorParams(
-		[property: JsonPropertyName("name")] string Name
+		[property: JsonPropertyName("name")] string Name,
+		[property: JsonPropertyName("type")] string Type
 	);
 
 	[Authorize]
@@ -51,6 +52,9 @@ public class SensorsController : ControllerBase {
 		if (string.IsNullOrWhiteSpace(sensorParams.Name) || sensorParams.Name.Length > 30)
 			return BadRequest("Invalid sensor name");
 
+		if (string.IsNullOrWhiteSpace(sensorParams.Type) || sensorParams.Type.Length > 30)
+			return BadRequest("Invalid sensor type");
+
 		var claims = ((ClaimsIdentity)HttpContext.User.Identity!).Claims;
 
 		var deviceName = claims.FirstOrDefault(claim => claim.Type == "device")?.Value;
@@ -58,11 +62,12 @@ public class SensorsController : ControllerBase {
 		if (device is null)
 			return BadRequest("Device not found");
 
-		if (await readingsContext.Sensors.AnyAsync(s => s.Name == sensorParams.Name && s.Device == device))
+		if (await readingsContext.Sensors.AnyAsync(sensor => sensor.Name == sensorParams.Name && sensor.Device == device))
 			return Conflict("Sensor name already exists");
 
 		var sensor = new Sensor {
 			Name = sensorParams.Name,
+			Type = sensorParams.Type,
 			Device = device
 		};
 

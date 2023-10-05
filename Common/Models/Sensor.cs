@@ -14,6 +14,10 @@ public class Sensor {
 	[JsonPropertyName("name")]
 	public required string Name { get; set; }
 
+	[MaxLength(30)]
+	[JsonPropertyName("type")]
+	public required string Type { get; set; }
+
 	[JsonPropertyName("device")]
 	public int DeviceId { get; set; }
 
