@@ -48,7 +48,7 @@ public class DevicesController : ControllerBase {
 			return BadRequest("Invalid device key");
 
 		if (await readingsContext.Devices.AnyAsync(d => d.Name == deviceParams.Name))
-			return BadRequest("Device name already exists");
+			return Conflict("Device name already exists");
 
 		var address = HttpContext.Connection.RemoteIpAddress;
 

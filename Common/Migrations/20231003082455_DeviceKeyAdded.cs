@@ -5,7 +5,7 @@
 namespace TemperatureTracker.Migrations
 {
     /// <inheritdoc />
-    public partial class Devicekeyadded : Migration
+    public partial class DeviceKeyAdded : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

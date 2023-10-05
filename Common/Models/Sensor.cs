@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace TemperatureTracker.Models;
 
+[Index(nameof(DeviceId), nameof(Name), IsUnique = true)]
 public class Sensor {
 	[Key]
 	[JsonPropertyName("id")]

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using TemperatureTracker.Models;
 
@@ -23,14 +24,14 @@ public class ReadingsController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<Reading>> Get(int id) {
 		var reading = await readingsContext.Readings.FindAsync(id);
-		if (reading == null)
+		if (reading is null)
 			return NotFound();
 
 		return reading;
 	}
 
 	public record struct CreateReadingParams(
-		[property: JsonPropertyName("sensor")] int Sensor,
+		[property: JsonPropertyName("sensor")] string SensorName,
 		[property: JsonPropertyName("temperature")] double? Temperature,
 		[property: JsonPropertyName("humidity")] double? Humidity
 	);
@@ -38,7 +39,12 @@ public class ReadingsController : ControllerBase {
 	[Authorize]
 	[HttpPost]
 	public async Task<ActionResult<Reading>> Create(CreateReadingParams readingParams) {
-		var sensor = await readingsContext.Sensors.FindAsync(readingParams.Sensor);
+		var claims = ((ClaimsIdentity)HttpContext.User.Identity!).Claims;
+
+		var deviceName = claims.FirstOrDefault(claim => claim.Type == "device")?.Value;
+		var sensor = await readingsContext.Sensors.FirstOrDefaultAsync(
+			sensor => sensor.Name == readingParams.SensorName && sensor.Device.Name == deviceName
+		);
 		if (sensor is null)
 			return BadRequest("Sensor not found");
 

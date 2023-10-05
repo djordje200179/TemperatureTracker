@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using TemperatureTracker.Models;
@@ -58,6 +57,9 @@ public class SensorsController : ControllerBase {
 		var device = await readingsContext.Devices.FirstOrDefaultAsync(d => d.Name == deviceName);
 		if (device is null)
 			return BadRequest("Device not found");
+
+		if (await readingsContext.Sensors.AnyAsync(s => s.Name == sensorParams.Name && s.Device == device))
+			return Conflict("Sensor name already exists");
 
 		var sensor = new Sensor {
 			Name = sensorParams.Name,

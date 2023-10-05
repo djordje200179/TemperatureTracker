@@ -13,7 +13,7 @@ namespace TemperatureTracker.Migrations
 {
     [DbContext(typeof(ReadingsContext))]
     [Migration("20231003082455_Device key added")]
-    partial class Devicekeyadded
+    partial class DeviceKeyAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
