@@ -9,19 +9,13 @@ namespace TemperatureTracker.ApiServer.Controllers;
 
 [ApiController]
 [Route("readings")]
-public class ReadingsController : ControllerBase {
-	private readonly ReadingsContext readingsContext;
-
-	public ReadingsController(ReadingsContext readingsContext) {
-		this.readingsContext = readingsContext;
-	}
-
+public class ReadingsController(ReadingsContext readingsContext) : ControllerBase {
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Reading>>> GetAll() {
 		return await readingsContext.Readings.ToListAsync();
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:int}")]
 	public async Task<ActionResult<Reading>> Get(int id) {
 		var reading = await readingsContext.Readings.FindAsync(id);
 		if (reading is null)

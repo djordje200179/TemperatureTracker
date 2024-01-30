@@ -9,6 +9,7 @@ sensor_type = "DS1820"
 
 base_url = "http://localhost:8081"
 
+
 def register_device():
 	body = {
 		"name": device_name,
@@ -22,6 +23,7 @@ def register_device():
 		print("Device registered")
 	else:
 		response.raise_for_status()
+
 
 jwt: str
 def login():
@@ -38,10 +40,12 @@ def login():
 	
 	global jwt
 	jwt = response.text
-	
+
+
 def register_sensor():
 	body = {
-		"name": sensor_name
+		"name": sensor_name,
+		"type": sensor_type
 	}
 	
 	while True:
@@ -62,7 +66,8 @@ def register_sensor():
 				login()
 			case _:
 				response.raise_for_status()
-	
+
+
 def send_data(temperature: float):
 	body = {
 		"sensor": sensor_name,
@@ -84,9 +89,11 @@ def send_data(temperature: float):
 				login()
 			case _:
 				response.raise_for_status()
-			
+
+
 def read_temp():
 	return 39
+
 
 def main():
 	register_device()
@@ -102,6 +109,7 @@ def main():
 		
 		print("Sleeping...")
 		time.sleep(5)
-		
+
+
 if __name__ == "__main__":
 	main()

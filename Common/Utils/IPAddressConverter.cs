@@ -4,13 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace TemperatureTracker.Utils;
 
-public class IPAddressConverter : JsonConverter<IPAddress> {
+public class IpAddressConverter : JsonConverter<IPAddress> {
 	public override IPAddress? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
 		var address = reader.GetString();
-		if (address is null)
-			return null;
-
-		return IPAddress.Parse(address);
+		return address is not null ? IPAddress.Parse(address) : null;
 	}
 
 	public override void Write(Utf8JsonWriter writer, IPAddress value, JsonSerializerOptions options) {

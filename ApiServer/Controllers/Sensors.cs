@@ -9,19 +9,13 @@ namespace TemperatureTracker.ApiServer.Controllers;
 
 [ApiController]
 [Route("sensors")]
-public class SensorsController : ControllerBase {
-	private readonly ReadingsContext readingsContext;
-
-	public SensorsController(ReadingsContext readingsContext) {
-		this.readingsContext = readingsContext;
-	}
-
+public class SensorsController(ReadingsContext readingsContext) : ControllerBase {
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Sensor>>> GetAll() {
 		return await readingsContext.Sensors.ToListAsync();
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:int}")]
 	public async Task<ActionResult<Sensor>> Get(int id) {
 		var sensor = await readingsContext.Sensors.FindAsync(id);
 		if (sensor is null)
@@ -30,13 +24,13 @@ public class SensorsController : ControllerBase {
 		return sensor;
 	}
 
-	[HttpGet("{id}/readings")]
+	[HttpGet("{id:int}/readings")]
 	public async Task<ActionResult<IEnumerable<Reading>>> GetReadings(int id) {
 		var sensor = await readingsContext.Sensors.FindAsync(id);
 		if (sensor is null)
 			return NotFound();
 
-		readingsContext.Sensors.Entry(sensor).Collection(s => s.Readings).Load();
+		await readingsContext.Sensors.Entry(sensor).Collection(s => s.Readings).LoadAsync();
 
 		return Ok(sensor.Readings);
 	}

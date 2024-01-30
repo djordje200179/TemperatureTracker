@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServer", "ApiServer\ApiS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewServer", "ViewServer\ViewServer.csproj", "{AF80AC91-970F-4CAB-93A9-B5803CDC2DFC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sensors", "Sensors", "{08B65482-2AA2-4A98-B1FF-4905B4DC09F2}"
-EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DS1820", "Sensors\DS1820\DS1820.pyproj", "{4D3C6FB5-2D0B-41DB-9BD4-CD67E603509D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

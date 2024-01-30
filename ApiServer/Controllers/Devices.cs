@@ -11,21 +11,13 @@ namespace TemperatureTracker.ApiServer.Controllers;
 
 [ApiController]
 [Route("devices")]
-public class DevicesController : ControllerBase {
-	private readonly ReadingsContext readingsContext;
-	private readonly IConfiguration configuration;
-
-	public DevicesController(ReadingsContext readingsContext, IConfiguration configuration) {
-		this.readingsContext = readingsContext;
-		this.configuration = configuration;
-	}
-
+public class DevicesController(ReadingsContext readingsContext, IConfiguration configuration) : ControllerBase {
 	[HttpGet]
 	public async Task<IEnumerable<Device>> GetAll() {
 		return await readingsContext.Devices.ToListAsync();
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:int}")]
 	public async Task<ActionResult<Device>> Get(int id) {
 		var device = await readingsContext.Devices.FindAsync(id);
 		if (device is null)
@@ -77,7 +69,7 @@ public class DevicesController : ControllerBase {
 	[HttpPost]
 	[Route("auth")]
 	public async Task<ActionResult<string>> Authenticate([FromBody] DeviceAuthParams authParams) {
-		var device = await readingsContext.Devices.FirstOrDefaultAsync(d => d.Name == authParams.Name);
+		var device = await readingsContext.Devices.FirstOrDefaultAsync(d => d.Name == authParams.Name && d.Key == authParams.Key);
 		if (device is null)
 			return BadRequest("Device not found");
 

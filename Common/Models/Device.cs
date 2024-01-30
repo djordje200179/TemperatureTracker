@@ -12,7 +12,7 @@ public class Device {
 	[JsonPropertyName("id")]
 	public int DeviceId { get; set; }
 
-	[JsonPropertyName("address"), JsonConverter(typeof(IPAddressConverter))]
+	[JsonPropertyName("address"), JsonConverter(typeof(IpAddressConverter))]
 	public required IPAddress Address { get; set; }
 
 	[MaxLength(30)]
